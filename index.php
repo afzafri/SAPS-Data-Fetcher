@@ -1,7 +1,7 @@
 <!--
 SAPS Data Fetcher
 Fetch student data from SAPS using their IC
-Creator : 
+Creator :
 Mohd Shahril (shahril96) - Main dev
 Afif Zafri (afzafri) - add form and UI
 Date : 1/1/2016
@@ -23,37 +23,45 @@ Year :
  <option value='2013'>2013</option>
  <option value='2014'>2014</option>
  <option value='2015'>2015</option>
- <option value='2016'>2016</option>                       
+ <option value='2016'>2016</option>
  </select>
 <br><br>
 <input type="submit" name="submit">
 </form>
 
-<?php 
+<?php
 
 if(isset($_POST['submit']))
 {
-	
-	$ic = $_POST['ic'];
+    echo "<h2>Data</h2><br>";
+
+    // check if ic format is correct
+    // matches : 999999029999
+    //           999999-99-9999
+    if(!preg_match('#\d{6}-?\d{2}-?\d{4}#g', $_POST['submit'])) {
+        die("Ic format is incorrect");
+    }
+
+	$ic = str_replace('-', '' ,$_POST['ic']); // remove any '-' chars in input
 	$tahun = $_POST['tahun_semasa'];
-	
+
     $get = file_get_contents("https://sapsnkra.moe.gov.my/ibubapa2/semak.php?txtIC={$ic}&Semak=Semak+Laporan&jenissek=2&tahun_semasa={$tahun}");
-	
+
 	// build up custom header + cookie
 	preg_match_all('#Set-Cookie: (.*?);#', implode('', $http_response_header), $out);
 	$opts = array('http'=>array('header'=> "Cookie: " . implode('; ', $out[1]) . "\r\n"));
 	$get = file_get_contents("https://sapsnkra.moe.gov.my/ibubapa2/menu.php", false, stream_context_create($opts));
 	preg_match_all('#<strong>(.*?)&nbsp;</strong>#', $get, $out);
-	
-	echo "<h2>Data</h2><ul>";
-	
+
+	echo '<ul>';
+
 	for($i=0;$i<count($out[1]);$i++)
 	{
 		echo "<li>". $out[1][$i] . "</li>";
 	}
-	
+
 	echo "</ul>";
-	
+
 }
 
 ?>
