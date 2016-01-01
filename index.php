@@ -16,14 +16,13 @@ Date : 1/1/2016
 <form action="index.php" method="post">
 IC : <input type="text" name="ic" value="<?php echo (isset($_POST['ic']) ? htmlentities($_POST['ic']) : null) ?>"><br>
 Year :
- <select name="tahun_semasa" id="tahun_semasa" value="<?php echo (isset($_POST['tahun_semasa']) ? htmlentities($_POST['tahun_semasa']) : null) ?>">
+ <select name="tahun_semasa" id="tahun_semasa" value="<?php echo (isset($_POST['tahun_semasa']) ? $_POST['tahun_semasa'] : null) ?>">
  <option value="">-- Pilih Tahun --</option>
- <option value='2011'>2011</option>
- <option value='2012'>2012</option>
- <option value='2013'>2013</option>
- <option value='2014'>2014</option>
- <option value='2015'>2015</option>
- <option value='2016'>2016</option>
+    <?php
+    for($year = 2011; $year <= date('Y'); $year++) {
+        echo "<option value='" . $year . "'>" . $year . "</option>";
+    }
+    ?>
  </select>
 <br><br>
 <input type="submit" name="submit">
@@ -52,6 +51,10 @@ if(isset($_POST['submit']))
 	$opts = array('http'=>array('header'=> "Cookie: " . implode('; ', $out[1]) . "\r\n"));
 	$get = file_get_contents("https://sapsnkra.moe.gov.my/ibubapa2/menu.php", false, stream_context_create($opts));
 	preg_match_all('#<strong>(.*?)&nbsp;</strong>#', $get, $out);
+
+    if(empty($out[1])) {
+        die('record don\'t exist');
+    }
 
 	echo '<ul>';
 
