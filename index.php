@@ -41,6 +41,11 @@ if(isset($_POST['submit']))
         die("Ic format is incorrect");
     }
 
+    // check if year is incorrect
+    if(!preg_match('#20\d{2}', $_POST['tahun_semasa'])) {
+        die("invalid year format");
+    }
+
 	$ic = str_replace('-', '' ,$_POST['ic']); // remove any '-' chars in input
 	$tahun = $_POST['tahun_semasa'];
 
