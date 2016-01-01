@@ -16,7 +16,7 @@ Date : 1/1/2016
 <form action="index.php" method="post">
 IC : <input type="text" name="ic" value="<?php echo (isset($_POST['ic']) ? htmlentities($_POST['ic']) : null) ?>"><br>
 Year :
- <select name="tahun_semasa" id="tahun_semasa" value="<?php echo (isset($_POST['tahun_semasa']) ? $_POST['tahun_semasa'] : null) ?>">
+ <select name="tahun_semasa" id="tahun_semasa" value="<?php echo (isset($_POST['tahun_semasa']) ? htmlentities($_POST['tahun_semasa']) : null) ?>">
  <option value="">-- Pilih Tahun --</option>
     <?php
     for($year = 2011; $year <= date('Y'); $year++) {
