@@ -14,9 +14,9 @@ Date : 1/1/2016
 <h1>SAPS Data Fetcher</h1>
 
 <form action="index.php" method="post">
-IC : <input type="text" name="ic" value="<?php (isset($_POST['ic']) ? $_POST['ic'] : null) ?>"><br>
+IC : <input type="text" name="ic" value="<?php echo (isset($_POST['ic']) ? htmlentities($_POST['ic']) : null) ?>"><br>
 Year :
- <select name="tahun_semasa" id="tahun_semasa" value="<?php (isset($_POST['tahun_semasa']) ? $_POST['tahun_semasa'] : null) ?>">
+ <select name="tahun_semasa" id="tahun_semasa" value="<?php echo (isset($_POST['tahun_semasa']) ? htmlentities($_POST['tahun_semasa']) : null) ?>">
  <option value="">-- Pilih Tahun --</option>
  <option value='2011'>2011</option>
  <option value='2012'>2012</option>
