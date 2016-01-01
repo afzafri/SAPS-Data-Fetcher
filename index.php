@@ -16,7 +16,7 @@ Date : 1/1/2016
 <form action="index.php" method="post">
 IC : <input type="text" name="ic" value="<?php echo (isset($_POST['ic']) ? htmlentities($_POST['ic']) : null) ?>"><br>
 Year :
- <select name="tahun_semasa" id="tahun_semasa" value="<?php echo (isset($_POST['tahun_semasa']) ? htmlentities($_POST['tahun_semasa']) : null) ?>">
+ <select name="tahun_semasa" id="tahun_semasa" ?>">
  <option value="">-- Pilih Tahun --</option>
     <?php
     for($year = 2011; $year <= date('Y'); $year++) {
@@ -30,19 +30,19 @@ Year :
 
 <?php
 
-if(isset($_POST['submit']))
+if(!empty($_POST['ic']) && !empty($_POST['tahun_semasa']))
 {
     echo "<h2>Data</h2><br>";
 
     // check if ic format is correct
     // matches : 999999029999
     //           999999-99-9999
-    if(!preg_match('#\d{6}-?\d{2}-?\d{4}#g', $_POST['submit'])) {
+    if(!preg_match('#\d{6}-?\d{2}-?\d{4}#', $_POST['ic'])) {
         die("Ic format is incorrect");
     }
 
     // check if year is incorrect
-    if(!preg_match('#20\d{2}', $_POST['tahun_semasa'])) {
+    if(!preg_match('#20\d{2}#', $_POST['tahun_semasa'])) {
         die("invalid year format");
     }
 
@@ -57,7 +57,8 @@ if(isset($_POST['submit']))
 	$get = file_get_contents("https://sapsnkra.moe.gov.my/ibubapa2/menu.php", false, stream_context_create($opts));
 	preg_match_all('#<strong>(.*?)&nbsp;</strong>#', $get, $out);
 
-    if(empty($out[1])) {
+
+    if(empty($out[1][1])) {
         die('record don\'t exist');
     }
 
